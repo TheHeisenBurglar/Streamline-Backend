@@ -1,17 +1,17 @@
 const express = require("express");
-const { NoteModel } = require("../models/noteModel");
+const { InvModel } = require("../models/invModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { authenticator } = require("../middlewares/authenticator");
 
-const noteRouter = express.Router();
-noteRouter.use(authenticator);
+const invRouter = express.Router();
+invRouter.use(authenticator);
 
-noteRouter.get("/", async (req, res) => {
+invRouter.get("/", async (req, res) => {
     let token = req.headers.authorization
   jwt.verify(token, "secretkey", async (err, decode) => {
     try {
-      let data = await NoteModel.find({ user: decode.userId });
+      let data = await InvModel.find({ user: decode.userId });
       res.send({
         data:data,
         message:"Success",
@@ -27,12 +27,12 @@ noteRouter.get("/", async (req, res) => {
 
 });
 
-noteRouter.post("/create", async (req, res) => {
+invRouter.post("/create", async (req, res) => {
   try {
-    let note = new NoteModel(req.body);
-    await note.save();
+    let inv = new InvModel(req.body);
+    await inv.save();
     res.send({
-      message: "Note Created",
+      message: "Inventory Created",
       status: 1,
     });
   } catch (error) {
@@ -43,12 +43,12 @@ noteRouter.post("/create", async (req, res) => {
   }
 });
 
-noteRouter.patch("/", async(req, res) =>{
+invRouter.patch("/", async(req, res) =>{
     let {id} = req.headers
     try {
-        await NoteModel.findByIdAndUpdate({_id:id}, req.body)
+        await InvModel.findByIdAndUpdate({_id:id}, req.body)
         res.send({
-            message:"Note Updated",
+            message:"Inventory Updated",
             status:1
         })
     } catch (error) {
@@ -59,12 +59,12 @@ noteRouter.patch("/", async(req, res) =>{
     }
 })
 
-noteRouter.delete("/", async(req, res) =>{
+invRouter.delete("/", async(req, res) =>{
     let {id} = req.headers
     try {
-        await NoteModel.findByIdAndDelete({_id:id})
+        await InvModel.findByIdAndDelete({_id:id})
         res.send({
-            message:"Note Delete",
+            message:"Inventory Deleted",
             status:1
         })
     } catch (error) {
@@ -75,4 +75,4 @@ noteRouter.delete("/", async(req, res) =>{
     }
 })
 
-module.exports = { noteRouter };
+module.exports = { invRouter };

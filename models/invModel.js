@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const noteSchema = mongoose.Schema({
+const invSchema = mongoose.Schema({
     title:{type:String, required:true},
     body:{type:String, required:true},
     user:{type:String, required:true}
@@ -8,8 +8,8 @@ const noteSchema = mongoose.Schema({
     versionKey:false
 });
 
-const NoteModel = mongoose.model("note", noteSchema);
+const InvModel = mongoose.model("inv", invSchema);
 
 module.exports = {
-    NoteModel,
+    InvModel,
 };
