@@ -1,26 +1,20 @@
 const express = require("express");
-const { InvModel } = require("../models/invModel");
+const { ReserveModel } = require("../models/reserveModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { authenticator } = require("../middlewares/authenticator");
-const { UserModel } = require("../models/userModel");
 
-const invRouter = express.Router();
-invRouter.use(authenticator);
+const reserveRouter = express.Router();
+reserveRouter.use(authenticator);
 
-invRouter.get("/", async (req, res) => {
+reserveRouter.get("/", async (req, res) => {
     let token = req.headers.authorization
   jwt.verify(token, "secretkey", async (err, decode) => {
     try {
-      let user = await UserModel.findOne({ user:decode.user});
-      let companyName = user ? user.company : null;
-      let data = await InvModel.find({company: companyName});
-      
-      
+      let data = await ReserveModel.find({ user: decode.userId });
       res.send({
         data:data,
         message:"Success",
-        companyName: companyName,
         status:1
       })
     } catch (error) {
@@ -33,12 +27,12 @@ invRouter.get("/", async (req, res) => {
 
 });
 
-invRouter.post("/create", async (req, res) => {
+reserveRouter.post("/create", async (req, res) => {
   try {
-    let inv = new InvModel(req.body);
-    await inv.save();
+    let reserve = new ReserveModel(req.body);
+    await reserve.save();
     res.send({
-      message: "Inventory Created",
+      message: "Reserve Created",
       status: 1,
     });
   } catch (error) {
@@ -49,12 +43,12 @@ invRouter.post("/create", async (req, res) => {
   }
 });
 
-invRouter.patch("/", async(req, res) =>{
+reserveRouter.patch("/", async(req, res) =>{
     let {id} = req.headers
     try {
-        await InvModel.findByIdAndUpdate({_id:id}, req.body)
+        await ReserveModel.findByIdAndUpdate({_id:id}, req.body)
         res.send({
-            message:"Inventory Updated",
+            message:"Reserve Updated",
             status:1
         })
     } catch (error) {

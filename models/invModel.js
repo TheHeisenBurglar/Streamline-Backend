@@ -1,9 +1,11 @@
 const mongoose = require("mongoose")
 
 const invSchema = mongoose.Schema({
-    title:{type:String, required:true},
-    body:{type:String, required:true},
-    user:{type:String, required:true}
+    name:{type:String, required:true},
+    company:{type:String, required:true},
+    voh: {type:String, required:true},
+    dim: {type:String, required:true},
+    tag: {type:String, required:true},
 },{
     versionKey:false
 });

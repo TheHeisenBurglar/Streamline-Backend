@@ -10,7 +10,7 @@ userRouter.get("/", (req, res) => {
 });
 
 userRouter.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { company, name, email, password } = req.body;
   bcrypt.hash(password, 5, async function (err, hash) {
     if (err)
       return res.send({
@@ -18,7 +18,7 @@ userRouter.post("/register", async (req, res) => {
         status: 0,
       });
     try {
-      let user = new UserModel({ name, email, password: hash });
+      let user = new UserModel({ company ,name, email, password: hash });
       await user.save();
       res.send({
         message: "user created",
