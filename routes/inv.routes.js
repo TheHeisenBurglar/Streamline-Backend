@@ -34,8 +34,13 @@ invRouter.get("/", async (req, res) => {
 });
 
 invRouter.post("/create", async (req, res) => {
+  let token = req.headers.authorization
+  jwt.verify(token, "secretkey", async (err, decode) => {
   try {
+    let user = await UserModel.findOne({ user:decode.user});
+    let companyName = user ? user.company : null;
     let inv = new InvModel(req.body);
+    inv.company = companyName;
     await inv.save();
     res.send({
       message: "Inventory Created",
@@ -47,6 +52,7 @@ invRouter.post("/create", async (req, res) => {
       status: 0,
     });
   }
+  })
 });
 
 invRouter.patch("/", async(req, res) =>{

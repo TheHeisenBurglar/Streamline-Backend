@@ -6,6 +6,7 @@ const invSchema = mongoose.Schema({
     voh: {type:String, required:true},
     dim: {type:String, required:true},
     tag: {type:String, required:true},
+    cost: {type:String, required:true},
 },{
     versionKey:false
 });
