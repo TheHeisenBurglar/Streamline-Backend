@@ -5,6 +5,7 @@ const invSchema = mongoose.Schema({
     company:{type:String, required:true},
     voh: {type:String, required:false},
     dim: {type:String, required:true},
+    quantity: {type:String, required:true},
     tag: {type:String, required:true},
     cost: {type:String, required:false},
 },{
